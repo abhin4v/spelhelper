@@ -75,4 +75,4 @@ For more details see the [API Javadocs][6].
 [3]: http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/expressions.html#d0e11927
 [4]: http://github.com/abhin4v/spelhelper/blob/master/src/main/java/net/abhinavsarkar/spelhelper/ImplicitMethods.java
 [5]: http://github.com/abhin4v/spelhelper/blob/master/src/main/java/net/abhinavsarkar/spelhelper/ExtensionFunctions.java
-[6]: http://github.com/abhin4v/spelhelper/raw/master/apidocs/net/abhinavsarkar/spelhelper/package-summary.html
+[6]: http://abhin4v.github.com/spelhelper/net/abhinavsarkar/spelhelper/package-summary.html

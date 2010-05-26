@@ -30,7 +30,7 @@
      </execution>
     </executions>
     <configuration>
-     <reportOutputDirectory>${basedir}/apidocs</reportOutputDirectory>
+     <reportOutputDirectory>${basedir}/../apidocs</reportOutputDirectory>
      <footer>Code hosted at &lt;a target='_blank' href='http://github.com/abhin4v/spelhelper/'&gt;github&lt;/a&gt;</footer>
      <links>
       <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
