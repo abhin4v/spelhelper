@@ -17,18 +17,18 @@ final class ImplicitConstructorResolver implements
 
     private final ReflectiveConstructorResolver delegate = new ReflectiveConstructorResolver();
 
-	public ConstructorExecutor resolve(final EvaluationContext context,
+    public ConstructorExecutor resolve(final EvaluationContext context,
             final String typeName, final Class<?>[] argumentTypes) throws AccessException {
-		try {
-			return delegate.resolve(context, typeName, argumentTypes);
-		} catch (AccessException ex) {
-	    	Object variable = ((SpelHelper) context.lookupVariable(SpelHelper.CONTEXT_LOOKUP_KEY))
-	    		.lookupImplicitConstructor(typeName + Arrays.toString(argumentTypes));
-	    	if (variable instanceof Constructor<?>) {
-	    		Constructor<?> constructor = (Constructor<?>) variable;
-				return delegate.resolve(context, constructor.getDeclaringClass().getName(), argumentTypes);
-	    	}
-	    	return null;
-		}
+        try {
+            return delegate.resolve(context, typeName, argumentTypes);
+        } catch (AccessException ex) {
+            Object variable = ((SpelHelper) context.lookupVariable(SpelHelper.CONTEXT_LOOKUP_KEY))
+                .lookupImplicitConstructor(typeName + Arrays.toString(argumentTypes));
+            if (variable instanceof Constructor<?>) {
+                Constructor<?> constructor = (Constructor<?>) variable;
+                return delegate.resolve(context, constructor.getDeclaringClass().getName(), argumentTypes);
+            }
+            return null;
+        }
     }
 }
