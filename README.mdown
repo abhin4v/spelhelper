@@ -1,0 +1,78 @@
+SpelHelper provides additional functionalities to work with
+[Spring Expression Language (SpEL)][1].
+
+The addition functionalities provided are:
+
+1. Implicit methods
+2. Implicit properties
+3. Simplified extension functions
+4. Simplified constructors
+
+**Implicit Methods**
+
+Implicit methods allow one to registers methods with SpelHelper and attach
+them to particular classes. After that, when that method is called on an
+object of that particular class inside a SpEL expression, SpelHelper
+redirects the method call to the registered method.
+
+Example: [ImplicitMethods#sorted(List)][4] method is automatically
+registered by SpelHelper. The class that the method should be invoked for
+is the type of the first parameter of the method. In this case, the class is
+java.util.List.
+
+So when an expression like `"#list(1,4,2).sorted()"` is evaluated, the
+[ImplicitMethods#sorted(List)][4] method is invoked with the list as its
+first parameter and its return value is used in further evaluation of the
+expression.
+
+**Implicit Properties**
+
+Implicit properties allow one to treat no argument methods of an object
+as properties of the object. SpelHelper intercepts the property resolution
+of SpEL and if the property name is same as some no-arg method of the target
+object then it invokes the method on the object and provides its return value
+as the property value for further evaluation of the expression.
+
+Example: Using implicit properties, the example of implicit methods can be
+written as: `"#list(1,4,2).sorted"` - dropping the parens - and it will return
+the same value as the last example.
+
+Implicit property resolution considers both the actual methods of the object
+and the implicit methods registered on the object's class.
+
+**Simplified extension functions**
+
+SpEL [allows][2] to register extension function on the context by providing a
+name and a java.lang.reflect.Method object. SpelHelper simplifies this by taking a class
+and registering all the `public static` methods of the class which do not
+have a `void` return type. The methods are registered by their simple name.
+
+Example: All the methods of [ExtensionFunctions][5] class are automatically
+registered by SpelHelper. Hence the method [ExtensionFunctions#list(Object...)][5]
+can be called from inside a SpEL expression using the function call syntax:
+`"#list(1,2,3)`".
+
+**Simplified constructors**
+
+SpEL [allows][3] calling constructors from inside a SpEL expression using the
+`new` operator. But they have to be called with their full name like:
+`"new org.example.Foo('bar')"`. SpelHelper simplifies this by taking a class
+and registering all its public constructors to the SpEL context by their
+simple name.
+
+Example: After registering the `org.example.Foo` class with SpelHelper, its
+constructor can be called from inside a SpEL expression by: `"new Foo('bar')"`.
+
+In addition to all the above functionalities, SpelHelper automatically registers
+some extension functions and implicit methods which are always available in
+the SpEL expressions evaluated through SpelHelper. See [ExtensionFunctions][5]
+and [ImplicitMethods][4] for further details.
+
+For more details see the [API Javadocs][6].
+
+[1]: http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/expressions.html
+[2]: http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/expressions.html#expressions-ref-functions
+[3]: http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/expressions.html#d0e11927
+[4]: http://github.com/abhin4v/spelhelper/blob/master/src/main/java/net/abhinavsarkar/spelhelper/ImplicitMethods.java
+[5]: http://github.com/abhin4v/spelhelper/blob/master/src/main/java/net/abhinavsarkar/spelhelper/ExtensionFunctions.java
+[6]: http://github.com/abhin4v/spelhelper/raw/master/apidocs/net/abhinavsarkar/spelhelper/package-summary.html

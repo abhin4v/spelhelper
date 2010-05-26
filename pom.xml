@@ -1,47 +1,75 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+ <modelVersion>4.0.0</modelVersion>
 
-  <groupId>net.abhinavsarkar.spelhelper</groupId>
-  <artifactId>SpelHelper</artifactId>
-  <version>1.0</version>
-  <packaging>jar</packaging>
+ <groupId>net.abhinavsarkar.spelhelper</groupId>
+ <artifactId>SpelHelper</artifactId>
+ <version>1.0</version>
+ <packaging>jar</packaging>
 
-  <name>SpelHelper</name>
-  <url>http://maven.apache.org</url>
+ <name>SpelHelper</name>
+ <url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  
-  <build>
-  	<plugins>
-  	  <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
-      </plugin>
-  	</plugins>
-  </build>
+ <properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+ </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.4</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-      <version>3.0.2.RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-expression</artifactId>
-      <version>3.0.2.RELEASE</version>
-    </dependency>
-  </dependencies>
+ <build>
+  <plugins>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-javadoc-plugin</artifactId>
+    <version>2.7</version>
+    <executions>
+     <execution>
+      <id>javadoc</id>
+      <phase>process-sources</phase>
+      <goals>
+       <goal>javadoc</goal>
+      </goals>
+     </execution>
+    </executions>
+    <configuration>
+     <reportOutputDirectory>${basedir}/apidocs</reportOutputDirectory>
+     <footer>Code hosted at &lt;a target='_blank' href='http://github.com/abhin4v/spelhelper/'&gt;github&lt;/a&gt;</footer>
+     <links>
+      <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
+     </links>
+     <show>protected</show>
+     <stylesheetfile>spring-javadoc.css</stylesheetfile>
+     <doclet>com.visural.doclets.markdown.standard.Standard</doclet>
+     <docletPath>${basedir}/lib/markdown-doclet-3.0.jar</docletPath>
+     <useStandardDocletOptions>true</useStandardDocletOptions>
+    </configuration>
+   </plugin>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>2.3.1</version>
+    <configuration>
+     <source>1.6</source>
+     <target>1.5</target>
+    </configuration>
+   </plugin>
+  </plugins>
+ </build>
+
+ <dependencies>
+  <dependency>
+   <groupId>junit</groupId>
+   <artifactId>junit</artifactId>
+   <version>4.4</version>
+   <scope>test</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.springframework</groupId>
+   <artifactId>spring-core</artifactId>
+   <version>3.0.2.RELEASE</version>
+  </dependency>
+  <dependency>
+   <groupId>org.springframework</groupId>
+   <artifactId>spring-expression</artifactId>
+   <version>3.0.2.RELEASE</version>
+  </dependency>
+ </dependencies>
 </project>

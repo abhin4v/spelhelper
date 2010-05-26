@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package net.abhinavsarkar.spelhelper;
 
@@ -13,11 +13,11 @@ import org.springframework.expression.MethodResolver;
 import org.springframework.expression.TypedValue;
 import org.springframework.util.Assert;
 
-public final class ImplicitPropertyAccessor extends ReadOnlyGenericPropertyAccessor {
-    
+final class ImplicitPropertyAccessor extends ReadOnlyGenericPropertyAccessor {
+
     private static final ConcurrentHashMap<String, MethodExecutor> cache =
         new ConcurrentHashMap<String, MethodExecutor>();
-    
+
     public boolean canRead(final EvaluationContext context,
             final Object target, final String name)
             throws AccessException {
@@ -26,7 +26,7 @@ public final class ImplicitPropertyAccessor extends ReadOnlyGenericPropertyAcces
         if (cache.containsKey(cacheKey)) {
             return cache.get(cacheKey) != null;
         }
-        
+
         for (MethodResolver mr : context.getMethodResolvers()) {
             MethodExecutor me = mr.resolve(context, target, name, new Class[0]);
             if (me != null) {
@@ -34,7 +34,7 @@ public final class ImplicitPropertyAccessor extends ReadOnlyGenericPropertyAcces
                 return true;
             }
         }
-        
+
         cache.putIfAbsent(cacheKey, null);
         return false;
     }
@@ -49,5 +49,5 @@ public final class ImplicitPropertyAccessor extends ReadOnlyGenericPropertyAcces
         throw new AccessException(MessageFormat.format(
                 "Cannot read property: {0} of target: {1}", name, target));
     }
-    
+
 }

@@ -36,7 +36,7 @@ public class SpelHelperTest {
         Assert.assertEquals(
             new ConstructorTest(),
             new SpelHelper()
-                .registerImplicitConstructorsFromClass(ConstructorTest.class)
+                .registerConstructorsFromClass(ConstructorTest.class)
                 .evalExpression("new ConstructorTest()", new Object(), ConstructorTest.class));
     }
 

@@ -6,7 +6,7 @@ import org.springframework.expression.AccessException;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.PropertyAccessor;
 
-public abstract class ReadOnlyGenericPropertyAccessor implements
+abstract class ReadOnlyGenericPropertyAccessor implements
         PropertyAccessor {
 
     public final boolean canWrite(final EvaluationContext context,

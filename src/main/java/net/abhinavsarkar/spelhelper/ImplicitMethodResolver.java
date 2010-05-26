@@ -14,7 +14,7 @@ import org.springframework.expression.MethodResolver;
 import org.springframework.expression.TypedValue;
 import org.springframework.expression.spel.support.ReflectiveMethodResolver;
 
-public final class ImplicitMethodResolver implements MethodResolver {
+final class ImplicitMethodResolver implements MethodResolver {
 
     private static final ConcurrentHashMap<String, MethodExecutor> cache =
         new ConcurrentHashMap<String, MethodExecutor>();
