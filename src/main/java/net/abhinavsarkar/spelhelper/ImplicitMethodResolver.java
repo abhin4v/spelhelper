@@ -30,7 +30,7 @@ import org.springframework.expression.spel.support.ReflectiveMethodResolver;
 
 final class ImplicitMethodResolver implements MethodResolver {
 
-    private static final ConcurrentHashMap<String, MethodExecutor> cache =
+    private static final ConcurrentHashMap<String, MethodExecutor> CACHE =
         new ConcurrentHashMap<String, MethodExecutor>();
 
     private static final MethodExecutor NULL_ME = new MethodExecutor() {
@@ -44,7 +44,7 @@ final class ImplicitMethodResolver implements MethodResolver {
             MethodExecutor {
         private final MethodExecutor executor;
 
-        private ImplicitMethodExecutor(final MethodExecutor executor) {
+        public ImplicitMethodExecutor(final MethodExecutor executor) {
             this.executor = executor;
         }
 
@@ -65,8 +65,8 @@ final class ImplicitMethodResolver implements MethodResolver {
         }
         Class<?> type = targetObject.getClass();
         String cacheKey = type.getName() + "." + name;
-        if (cache.containsKey(cacheKey)) {
-            MethodExecutor executor = cache.get(cacheKey);
+        if (CACHE.containsKey(cacheKey)) {
+            MethodExecutor executor = CACHE.get(cacheKey);
             return executor == NULL_ME ? null : executor;
         }
 
@@ -75,25 +75,24 @@ final class ImplicitMethodResolver implements MethodResolver {
             int modifiers = method.getModifiers();
             if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers)) {
                 Class<?>[] parameterTypes = method.getParameterTypes();
-                Class<?> firstParameterType = parameterTypes[0];
+                Class<?> firstParamType = parameterTypes[0];
                 if (parameterTypes.length > 0
-                        && firstParameterType.isAssignableFrom(type)) {
-
-                    Class<?>[] modifiedArgumentTypes = new Class[argumentTypes.length + 1];
-                    modifiedArgumentTypes[0] = firstParameterType;
-                    System.arraycopy(argumentTypes, 0, modifiedArgumentTypes,
+                        && firstParamType.isAssignableFrom(type)) {
+                    Class<?>[] newArgumentTypes = new Class[argumentTypes.length + 1];
+                    newArgumentTypes[0] = firstParamType;
+                    System.arraycopy(argumentTypes, 0, newArgumentTypes,
                             1, argumentTypes.length);
                     MethodExecutor executor = new ReflectiveMethodResolver()
                             .resolve(context, method.getDeclaringClass(), name,
-                                    modifiedArgumentTypes);
+                                    newArgumentTypes);
                     MethodExecutor wrappedExecutor = executor == null ? null
                             : new ImplicitMethodExecutor(executor);
-                    cache.putIfAbsent(cacheKey, wrappedExecutor);
+                    CACHE.putIfAbsent(cacheKey, wrappedExecutor);
                     return wrappedExecutor;
                 }
             }
         }
-        cache.putIfAbsent(cacheKey, NULL_ME);
+        CACHE.putIfAbsent(cacheKey, NULL_ME);
         return null;
     }
 

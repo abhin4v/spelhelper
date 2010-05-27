@@ -126,10 +126,10 @@ public final class SpelHelper {
     static final String CONTEXT_LOOKUP_KEY = SpelHelper.class.getName();
 
     private static final ExpressionParser PARSER = new SpelExpressionParser();
-    private static final ThreadLocal<EvaluationContext> currentContext =
+    private static final ThreadLocal<EvaluationContext> CURRENT_CONTEXT =
         new ThreadLocal<EvaluationContext>();
 
-    private volatile EvaluationContext context;
+    private EvaluationContext context;
     private final Set<Method> registeredFunctions = new HashSet<Method>();
     private final Map<String,Method> registeredMethods =
         new ConcurrentHashMap<String, Method>();
@@ -177,7 +177,9 @@ public final class SpelHelper {
      */
     public SpelHelper registerFunctionsFromClass(final Class<?> clazz) {
         registeredFunctions.addAll(filterFunctions(clazz));
-        context = null;
+        synchronized (PARSER) {
+            context = null;
+        }
         return this;
     }
 
@@ -214,9 +216,9 @@ public final class SpelHelper {
     public <T> T evalExpression(final String expressionString,
             final Object rootElement, final Class<T> desiredType) {
         EvaluationContext evaluationContext = getEvaluationContext(rootElement);
-        currentContext.set(evaluationContext);
+        CURRENT_CONTEXT.set(evaluationContext);
         T value = evalExpression(expressionString, evaluationContext, desiredType);
-        currentContext.set(null);
+        CURRENT_CONTEXT.set(null);
         return value;
     }
 
@@ -320,7 +322,7 @@ public final class SpelHelper {
      * Looks up an implicit constructor registered with this instance.
      * @param lookup    key to lookup which should be of form:
      * `constructor.getDeclaringClass().getSimpleName()`
-     *  `+ Arrays.toString(constructor.getParameterTypes())`
+     * `+ Arrays.toString(constructor.getParameterTypes())`
      * @return  The registered constructor if found, else null.
      */
     public Constructor<?> lookupImplicitConstructor(final String lookup) {
@@ -333,7 +335,7 @@ public final class SpelHelper {
      * @return  The current evaluation context.
      */
     public static EvaluationContext getCurrentContext() {
-        return currentContext.get();
+        return CURRENT_CONTEXT.get();
     }
 
     private static List<Method> filterMethods(final Class<?> clazz) {

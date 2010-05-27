@@ -33,6 +33,9 @@ import java.util.Set;
  */
 public final class ImplicitMethods {
 
+    private ImplicitMethods() {
+    }
+
     /**
      * Provides implicit method `distinct` on the {@link List} class.
      *
