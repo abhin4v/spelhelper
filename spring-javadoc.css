@@ -15,6 +15,16 @@
 	padding: 5px;
 }
 
+code 
+{ 
+	background-color: #eee; padding: 0px 2px; 
+}
+
+code:hover 
+{ 
+	background-color: #ddd; 
+}
+
 body 
 {
 	font: 12px Verdana, Arial, Helvetica, "Bitstream Vera Sans", sans-serif;
@@ -62,7 +72,7 @@ th
 
 .TableHeadingColor th
 {
-	background-color: #064F52;
+	background-color: #efffcb;
 	background-image: url(http://static.springsource.org/spring/docs/3.0.x/javadoc-api/resources/TableHeading-background.png);
 	background-repeat: repeat-x;
 	color:#fff;
