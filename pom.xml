@@ -8,12 +8,30 @@
  <packaging>jar</packaging>
 
  <name>SpelHelper</name>
- <url>http://maven.apache.org</url>
+ <description>SpelHelper provides additional functionality to work with Spring Expression Language (SpEL)</description>
+ <url>http://github.com/abhin4v/spelhelper</url>
 
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
  </properties>
 
+ <issueManagement>
+  <system>GitHub</system>
+  <url>http://github.com/abhin4v/spelhelper/issues</url>
+ </issueManagement>
+ <developers>
+  <developer>
+   <id>abhin4v</id>
+   <name>Abhinav Sarkar</name>
+   <email>abhinav@abhinavsarkar.net</email>
+   <url>http://abhinavsarkar.net</url>
+   <roles>
+   </roles>
+  </developer>
+ </developers>
+ <scm>
+  <url>scm:git:git://github.com/abhin4v/spelhelper.git</url>
+ </scm>
  <build>
   <plugins>
    <plugin>
@@ -36,6 +54,7 @@
       <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
      </links>
      <show>protected</show>
+     <notimestamp>true</notimestamp>
      <stylesheetfile>spring-javadoc.css</stylesheetfile>
      <doclet>com.visural.doclets.markdown.standard.Standard</doclet>
      <docletPath>${basedir}/lib/markdown-doclet-3.0.jar</docletPath>
@@ -52,6 +71,15 @@
     </configuration>
    </plugin>
   </plugins>
+  <resources>
+   <resource>
+    <filtering>true</filtering>
+    <directory>${basedir}</directory>
+    <includes>
+     <include>COPYING*</include>
+    </includes>
+   </resource>
+  </resources>
  </build>
 
  <dependencies>
