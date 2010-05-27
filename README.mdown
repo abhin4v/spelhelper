@@ -1,6 +1,8 @@
 SpelHelper provides additional functionalities to work with
 [Spring Expression Language (SpEL)][1].
 
+SpelHelper is available under GNU Lesser General Public License (GNU LGPL).
+
 The addition functionalities provided are:
 
 1. Implicit methods
