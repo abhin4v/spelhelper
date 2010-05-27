@@ -87,7 +87,9 @@ final class ImplicitMethodResolver implements MethodResolver {
                                     newArgumentTypes);
                     MethodExecutor wrappedExecutor = executor == null ? null
                             : new ImplicitMethodExecutor(executor);
-                    CACHE.putIfAbsent(cacheKey, wrappedExecutor);
+                    if(wrappedExecutor == null) {
+                        CACHE.putIfAbsent(cacheKey, NULL_ME);
+                    }
                     return wrappedExecutor;
                 }
             }
