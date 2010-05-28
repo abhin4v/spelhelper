@@ -7,6 +7,7 @@ import org.scalatest.junit.ShouldMatchersForJUnit
 import java.util.{Set => JSet, HashSet,
   List => JList, ArrayList,
   Map => JMap, HashMap}
+import org.springframework.expression.spel.SpelEvaluationException
 
 @RunWith(classOf[JUnitRunner])
 class ExtensionFunctionsSpec extends FlatSpec with ShouldMatchersForJUnit {
@@ -30,6 +31,12 @@ class ExtensionFunctionsSpec extends FlatSpec with ShouldMatchersForJUnit {
     List("a", "b", "c").zipWithIndex.foreach { x => map.put(x._1, x._2) }
     new SpelHelper().evalExpression("#map(#list('a','b','c'),#list(0,1,2))",
       new {}, classOf[JMap[String,Int]]) should equal(map)
+  }
+
+  "Extension Function 'map'" should "throw SpelEvaluationException" +
+          "if length of key and values lists is not same " in {
+    evaluating { new SpelHelper().evalExpression("#map(#list('a','b','c'),#list(1,2))",
+      new {}, classOf[JMap[String,Int]]) } should produce [SpelEvaluationException]
   }
 
 }
