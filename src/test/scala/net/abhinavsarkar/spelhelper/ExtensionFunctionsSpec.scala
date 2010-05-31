@@ -33,7 +33,7 @@ class ExtensionFunctionsSpec extends FlatSpec with ShouldMatchersForJUnit {
       new {}, classOf[JMap[String,Int]]) should equal(map)
   }
 
-  "Extension Function 'map'" should "throw SpelEvaluationException" +
+  "Extension Function 'map'" should "throw SpelEvaluationException " +
           "if length of key and values lists is not same " in {
     evaluating { new SpelHelper().evalExpression("#map(#list('a','b','c'),#list(1,2))",
       new {}, classOf[JMap[String,Int]]) } should produce [SpelEvaluationException]

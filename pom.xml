@@ -20,6 +20,20 @@
   <system>GitHub</system>
   <url>http://github.com/abhin4v/spelhelper/issues</url>
  </issueManagement>
+ <inceptionYear>2010</inceptionYear>
+ <distributionManagement>
+  <repository>
+   <id>ftp-maven.abhinavsarkar.net</id>
+   <url>ftp://ftp.byethost14.com/maven.abhinavsarkar.net/htdocs</url>
+  </repository>
+ </distributionManagement>
+ <licenses>
+  <license>
+   <name>GNU LESSER GENERAL PUBLIC LICENSE, Version 3</name>
+   <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+   <distribution>repo</distribution>
+  </license>
+ </licenses>
  <developers>
   <developer>
    <id>abhin4v</id>
@@ -34,7 +48,29 @@
   <url>scm:git:git://github.com/abhin4v/spelhelper.git</url>
  </scm>
  <build>
+  <extensions>
+   <!-- Enabling the use of FTP -->
+   <extension>
+    <groupId>org.apache.maven.wagon</groupId>
+    <artifactId>wagon-ftp</artifactId>
+    <version>1.0-beta-6</version>
+   </extension>
+  </extensions>
   <plugins>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-source-plugin</artifactId>
+    <version>2.1.2</version>
+    <executions>
+     <execution>
+      <id>attach-sources</id>
+      <phase>verify</phase>
+      <goals>
+       <goal>jar-no-fork</goal>
+      </goals>
+     </execution>
+    </executions>
+   </plugin>
    <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-javadoc-plugin</artifactId>
@@ -42,15 +78,17 @@
     <executions>
      <execution>
       <id>javadoc</id>
-      <phase>install</phase>
+      <phase>verify</phase>
       <goals>
        <goal>javadoc</goal>
+       <goal>jar</goal>
       </goals>
      </execution>
     </executions>
     <configuration>
      <reportOutputDirectory>${basedir}/../apidocs</reportOutputDirectory>
-     <footer>Code hosted at &lt;a target='_blank' href='http://github.com/abhin4v/spelhelper/'&gt;github&lt;/a&gt;</footer>
+     <footer>Code hosted at &lt;a target='_blank'
+      href='http://github.com/abhin4v/spelhelper/'&gt;github&lt;/a&gt;</footer>
      <links>
       <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
      </links>
@@ -106,12 +144,12 @@
     <artifactId>maven-surefire-report-plugin</artifactId>
     <version>2.5</version>
     <executions>
-      <execution>
-        <phase>test</phase>
-        <goals>
-          <goal>report-only</goal>
-        </goals>
-      </execution>
+     <execution>
+      <phase>test</phase>
+      <goals>
+       <goal>report-only</goal>
+      </goals>
+     </execution>
     </executions>
    </plugin>
    <plugin>
@@ -119,12 +157,12 @@
     <artifactId>cobertura-maven-plugin</artifactId>
     <version>2.4</version>
     <executions>
-      <execution>
-        <phase>verify</phase>
-        <goals>
-          <goal>cobertura</goal>
-        </goals>
-      </execution>
+     <execution>
+      <phase>verify</phase>
+      <goals>
+       <goal>cobertura</goal>
+      </goals>
+     </execution>
     </executions>
    </plugin>
   </plugins>
