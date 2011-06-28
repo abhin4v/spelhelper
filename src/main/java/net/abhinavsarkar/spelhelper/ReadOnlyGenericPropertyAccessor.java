@@ -31,7 +31,7 @@ abstract class ReadOnlyGenericPropertyAccessor implements
         return false;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public final Class[] getSpecificTargetClasses() {
         return null;
     }

@@ -85,7 +85,7 @@ public final class ExtensionFunctions {
     public static <K,V> Map<K,V> map(final List<? extends K> keys,
             final List<? extends V> values) {
         Assert.isTrue(keys.size() == values.size(),
-                "There should equal number of keys and values");
+                "There should be equal number of keys and values");
         Map<K,V> map = new HashMap<K,V>();
         int length = keys.size();
         for (int i = 0; i < length; i++) {

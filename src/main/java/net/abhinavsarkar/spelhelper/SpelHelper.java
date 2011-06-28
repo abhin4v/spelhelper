@@ -125,11 +125,10 @@ public final class SpelHelper {
 
     static final String CONTEXT_LOOKUP_KEY = SpelHelper.class.getName();
 
-    private static final ExpressionParser PARSER = new SpelExpressionParser();
+    private final ExpressionParser PARSER = new SpelExpressionParser();
     private static final ThreadLocal<EvaluationContext> CURRENT_CONTEXT =
         new ThreadLocal<EvaluationContext>();
 
-    private EvaluationContext context;
     private final Set<Method> registeredFunctions = new HashSet<Method>();
     private final Map<String,Method> registeredMethods =
         new ConcurrentHashMap<String, Method>();
@@ -177,9 +176,6 @@ public final class SpelHelper {
      */
     public SpelHelper registerFunctionsFromClass(final Class<?> clazz) {
         registeredFunctions.addAll(filterFunctions(clazz));
-        synchronized (PARSER) {
-            context = null;
-        }
         return this;
     }
 
@@ -194,7 +190,7 @@ public final class SpelHelper {
         for (Constructor<?> constructor : asList(clazz.getConstructors())) {
             registeredConstructors.put(
                     constructor.getDeclaringClass().getSimpleName()
-                    + Arrays.toString(constructor.getParameterTypes()),
+                        + Arrays.toString(constructor.getParameterTypes()),
                     constructor);
         }
         return this;
@@ -254,14 +250,8 @@ public final class SpelHelper {
      */
     public <T> T evalExpressions(final String[] expressionStrings,
             final Object rootElement, final Class<T> desiredType) {
-        int length = expressionStrings.length;
-        Assert.isTrue(length > 0,
-                "expressionStrings should have length more than 0");
-        for (int i = 0; i < length - 1; i++) {
-            evalExpression(expressionStrings[i], rootElement, Object.class);
-        }
-        return evalExpression(expressionStrings[length - 1],
-                rootElement, desiredType);
+        return evalExpressions(
+                expressionStrings, getEvaluationContext(rootElement), desiredType);
     }
 
     /**
@@ -288,23 +278,16 @@ public final class SpelHelper {
     }
 
     private EvaluationContext getEvaluationContext(final Object rootObject) {
-        if (context == null) {
-            synchronized (PARSER) {
-                if (context == null) {
-                    StandardEvaluationContext newContext = new StandardEvaluationContext(rootObject);
-                    newContext.getMethodResolvers().add(new ImplicitMethodResolver());
-                    newContext.getPropertyAccessors().add(new ImplicitPropertyAccessor());
-                    newContext.setConstructorResolvers(
-                            asList((ConstructorResolver) new ImplicitConstructorResolver()));
-                    for (Method method : registeredFunctions) {
-                        newContext.setVariable(method.getName(), method);
-                    }
-                    newContext.setVariable(CONTEXT_LOOKUP_KEY, this);
-                    context = newContext;
-                }
-            }
+        StandardEvaluationContext newContext = new StandardEvaluationContext(rootObject);
+        newContext.getMethodResolvers().add(new ImplicitMethodResolver());
+        newContext.getPropertyAccessors().add(new ImplicitPropertyAccessor());
+        newContext.setConstructorResolvers(
+                asList((ConstructorResolver) new ImplicitConstructorResolver()));
+        for (Method method : registeredFunctions) {
+            newContext.setVariable(method.getName(), method);
         }
-        return context;
+        newContext.setVariable(CONTEXT_LOOKUP_KEY, this);
+        return newContext;
     }
 
     /**
