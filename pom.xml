@@ -11,6 +11,12 @@
  <description>SpelHelper provides additional functionality to work with Spring Expression Language (SpEL)</description>
  <url>http://github.com/abhin4v/spelhelper</url>
 
+ <parent>
+  <groupId>org.sonatype.oss</groupId>
+  <artifactId>oss-parent</artifactId>
+  <version>7</version>
+ </parent>
+
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   <scala.version>2.7.7</scala.version>
@@ -21,12 +27,6 @@
   <url>http://github.com/abhin4v/spelhelper/issues</url>
  </issueManagement>
  <inceptionYear>2010</inceptionYear>
- <distributionManagement>
-  <repository>
-   <id>ftp-maven.abhinavsarkar.net</id>
-   <url>ftp://ftp.byethost14.com/maven.abhinavsarkar.net/htdocs</url>
-  </repository>
- </distributionManagement>
  <licenses>
   <license>
    <name>GNU LESSER GENERAL PUBLIC LICENSE, Version 3</name>
@@ -45,18 +45,25 @@
   </developer>
  </developers>
  <scm>
-  <url>scm:git:git://github.com/abhin4v/spelhelper.git</url>
+  <connection>scm:git:git@github.com:abhin4v/spelhelper.git</connection>
+  <developerConnection>scm:git:git@github.com:abhin4v/spelhelper.git</developerConnection>
+  <url>git@github.com:abhin4v/spelhelper.git</url>
  </scm>
  <build>
-  <extensions>
-   <!-- Enabling the use of FTP -->
-   <extension>
-    <groupId>org.apache.maven.wagon</groupId>
-    <artifactId>wagon-ftp</artifactId>
-    <version>1.0-beta-6</version>
-   </extension>
-  </extensions>
   <plugins>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-gpg-plugin</artifactId>
+    <executions>
+     <execution>
+      <id>sign-artifacts</id>
+      <phase>verify</phase>
+      <goals>
+       <goal>sign</goal>
+      </goals>
+     </execution>
+    </executions>
+   </plugin>
    <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-source-plugin</artifactId>
@@ -177,22 +184,6 @@
    </resource>
   </resources>
  </build>
-
- <pluginRepositories>
-  <pluginRepository>
-   <id>scala-tools.org</id>
-   <name>Scala-tools Maven2 Repository</name>
-   <url>http://scala-tools.org/repo-releases</url>
-  </pluginRepository>
- </pluginRepositories>
-
- <repositories>
-  <repository>
-   <id>scala-tools.org</id>
-   <name>Scala-Tools Maven2 Repository</name>
-   <url>http://scala-tools.org/repo-releases</url>
-  </repository>
- </repositories>
 
  <dependencies>
   <dependency>
