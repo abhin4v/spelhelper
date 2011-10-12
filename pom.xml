@@ -3,7 +3,7 @@
 
  <groupId>net.abhinavsarkar</groupId>
  <artifactId>SpelHelper</artifactId>
- <version>1.1-SNAPSHOT</version>
+ <version>1.1</version>
  <packaging>jar</packaging>
 
  <name>SpelHelper</name>
