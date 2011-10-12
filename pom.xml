@@ -19,6 +19,7 @@
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   <scala.version>2.7.7</scala.version>
+  <spring.version>3.0.6.RELEASE</spring.version>
  </properties>
 
  <issueManagement>
@@ -189,6 +190,7 @@
    <groupId>org.scala-lang</groupId>
    <artifactId>scala-library</artifactId>
    <version>${scala.version}</version>
+   <scope>test</scope>
   </dependency>
   <dependency>
    <groupId>org.scalatest</groupId>
@@ -205,12 +207,12 @@
   <dependency>
    <groupId>org.springframework</groupId>
    <artifactId>spring-core</artifactId>
-   <version>3.0.2.RELEASE</version>
+   <version>${spring.version}</version>
   </dependency>
   <dependency>
    <groupId>org.springframework</groupId>
    <artifactId>spring-expression</artifactId>
-   <version>3.0.2.RELEASE</version>
+   <version>${spring.version}</version>
   </dependency>
  </dependencies>
 

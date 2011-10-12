@@ -18,8 +18,9 @@
 package net.abhinavsarkar.spelhelper;
 
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
+import java.util.List;
 
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.expression.AccessException;
 import org.springframework.expression.ConstructorExecutor;
 import org.springframework.expression.ConstructorResolver;
@@ -31,13 +32,16 @@ final class ImplicitConstructorResolver implements
 
     private final ReflectiveConstructorResolver delegate = new ReflectiveConstructorResolver();
 
-    public ConstructorExecutor resolve(final EvaluationContext context,
-            final String typeName, final Class<?>[] argumentTypes) throws AccessException {
+    @Override
+    public ConstructorExecutor resolve(
+            final EvaluationContext context, final String typeName,
+            final List<TypeDescriptor> argumentTypes)
+    throws AccessException {
         try {
             return delegate.resolve(context, typeName, argumentTypes);
         } catch (AccessException ex) {
             Object variable = ((SpelHelper) context.lookupVariable(SpelHelper.CONTEXT_LOOKUP_KEY))
-                .lookupImplicitConstructor(typeName + Arrays.toString(argumentTypes));
+                .lookupImplicitConstructor(typeName + argumentTypes.toString());
             if (variable instanceof Constructor<?>) {
                 Constructor<?> constructor = (Constructor<?>) variable;
                 return delegate.resolve(context, constructor.getDeclaringClass().getName(), argumentTypes);

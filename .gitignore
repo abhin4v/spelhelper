@@ -1,2 +1,4 @@
 target/*
 .pmd
+.scala_dependencies
+.settings/

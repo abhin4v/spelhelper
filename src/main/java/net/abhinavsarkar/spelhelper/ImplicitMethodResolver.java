@@ -19,8 +19,11 @@ package net.abhinavsarkar.spelhelper;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.expression.AccessException;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.MethodExecutor;
@@ -32,6 +35,8 @@ final class ImplicitMethodResolver implements MethodResolver {
 
     private static final ConcurrentHashMap<String, MethodExecutor> CACHE =
         new ConcurrentHashMap<String, MethodExecutor>();
+
+    private final ReflectiveMethodResolver delegate = new ReflectiveMethodResolver();
 
     private static final MethodExecutor NULL_ME = new MethodExecutor() {
         public TypedValue execute(final EvaluationContext context, final Object target,
@@ -57,9 +62,11 @@ final class ImplicitMethodResolver implements MethodResolver {
         }
     }
 
-    public MethodExecutor resolve(final EvaluationContext context,
-            final Object targetObject, final String name, final Class<?>[] argumentTypes)
-            throws AccessException {
+    @Override
+    public MethodExecutor resolve(
+            final EvaluationContext context, final Object targetObject,
+            final String name, final List<TypeDescriptor> argumentTypes)
+    throws AccessException {
         if (targetObject == null) {
             return null;
         }
@@ -78,13 +85,13 @@ final class ImplicitMethodResolver implements MethodResolver {
                 Class<?> firstParamType = parameterTypes[0];
                 if (parameterTypes.length > 0
                         && firstParamType.isAssignableFrom(type)) {
-                    Class<?>[] newArgumentTypes = new Class[argumentTypes.length + 1];
-                    newArgumentTypes[0] = firstParamType;
-                    System.arraycopy(argumentTypes, 0, newArgumentTypes,
-                            1, argumentTypes.length);
-                    MethodExecutor executor = new ReflectiveMethodResolver()
-                            .resolve(context, method.getDeclaringClass(), name,
-                                    newArgumentTypes);
+                    List<TypeDescriptor> newArgumentTypes = new ArrayList<TypeDescriptor>();
+                    newArgumentTypes.add(TypeDescriptor.valueOf(firstParamType));
+                    newArgumentTypes.addAll(argumentTypes);
+
+                    MethodExecutor executor =
+                        delegate.resolve(context, method.getDeclaringClass(),
+                                name, newArgumentTypes);
                     MethodExecutor wrappedExecutor = executor == null ? null
                             : new ImplicitMethodExecutor(executor);
                     if (wrappedExecutor == null) {

@@ -18,8 +18,10 @@
 package net.abhinavsarkar.spelhelper;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.expression.AccessException;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.MethodExecutor;
@@ -42,7 +44,8 @@ final class ImplicitPropertyAccessor extends ReadOnlyGenericPropertyAccessor {
         }
 
         for (MethodResolver mr : context.getMethodResolvers()) {
-            MethodExecutor me = mr.resolve(context, target, name, new Class[0]);
+            MethodExecutor me =
+                mr.resolve(context, target, name, Collections.<TypeDescriptor>emptyList());
             if (me != null) {
                 CACHE.putIfAbsent(cacheKey, me);
                 return true;
