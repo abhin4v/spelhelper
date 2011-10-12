@@ -3,6 +3,18 @@ SpelHelper provides additional functionalities to work with
 
 SpelHelper is available under GNU Lesser General Public License (GNU LGPL).
 
+**Maven Usage**
+
+To use SpelHelper with Maven, add the following snippet in the dependencies section of your project's POM file:
+
+    <dependency>
+      <groupId>net.abhinavsarkar</groupId>
+      <artifactId>SpelHelper</artifactId>
+      <version>1.1</version>
+    </dependency>
+
+**Functionalities**
+
 The addition functionalities provided are:
 
 1. Implicit methods
@@ -10,7 +22,7 @@ The addition functionalities provided are:
 3. Simplified extension functions
 4. Simplified constructors
 
-**Implicit Methods**
+_**Implicit methods**_
 
 Implicit methods allow one to registers methods with SpelHelper and attach
 them to particular classes. After that, when that method is called on an
@@ -27,7 +39,7 @@ So when an expression like `"#list(1,4,2).sorted()"` is evaluated, the
 first parameter and its return value is used in further evaluation of the
 expression.
 
-**Implicit Properties**
+_**Implicit properties**_
 
 Implicit properties allow one to treat no argument methods of an object
 as properties of the object. SpelHelper intercepts the property resolution
@@ -42,7 +54,7 @@ the same value as the last example.
 Implicit property resolution considers both the actual methods of the object
 and the implicit methods registered on the object's class.
 
-**Simplified extension functions**
+_**Simplified extension functions**_
 
 SpEL [allows][2] to register extension function on the context by providing a
 name and a java.lang.reflect.Method object. SpelHelper simplifies this by taking a class
@@ -54,7 +66,7 @@ registered by SpelHelper. Hence the method [ExtensionFunctions#list(Object...)][
 can be called from inside a SpEL expression using the function call syntax:
 `"#list(1,2,3)`".
 
-**Simplified constructors**
+_**Simplified constructors**_
 
 SpEL [allows][3] calling constructors from inside a SpEL expression using the
 `new` operator. But they have to be called with their full name like:
