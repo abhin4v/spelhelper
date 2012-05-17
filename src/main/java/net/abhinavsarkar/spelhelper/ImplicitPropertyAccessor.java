@@ -34,13 +34,22 @@ final class ImplicitPropertyAccessor extends ReadOnlyGenericPropertyAccessor {
     private static final ConcurrentHashMap<String, MethodExecutor> CACHE =
         new ConcurrentHashMap<String, MethodExecutor>();
 
+    private static final MethodExecutor NULL_ME = new MethodExecutor() {
+        @Override
+        public TypedValue execute(final EvaluationContext context, final Object target,
+                final Object... arguments) throws AccessException {
+            throw new UnsupportedOperationException("This method should never be called");
+        }
+    };
+
+    @Override
     public boolean canRead(final EvaluationContext context,
             final Object target, final String name)
             throws AccessException {
         Assert.notNull(target, "target is null");
         String cacheKey = target.getClass().getName() + "." + name;
         if (CACHE.containsKey(cacheKey)) {
-            return CACHE.get(cacheKey) != null;
+            return CACHE.get(cacheKey) != NULL_ME;
         }
 
         for (MethodResolver mr : context.getMethodResolvers()) {
@@ -52,10 +61,11 @@ final class ImplicitPropertyAccessor extends ReadOnlyGenericPropertyAccessor {
             }
         }
 
-        CACHE.putIfAbsent(cacheKey, null);
+        CACHE.putIfAbsent(cacheKey, NULL_ME);
         return false;
     }
 
+    @Override
     public TypedValue read(final EvaluationContext context,
             final Object target, final String name)
             throws AccessException {

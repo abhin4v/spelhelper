@@ -27,8 +27,7 @@ import org.springframework.expression.ConstructorResolver;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.spel.support.ReflectiveConstructorResolver;
 
-final class ImplicitConstructorResolver implements
-        ConstructorResolver {
+final class ImplicitConstructorResolver implements ConstructorResolver {
 
     private final ReflectiveConstructorResolver delegate = new ReflectiveConstructorResolver();
 

@@ -23,19 +23,21 @@ import org.springframework.expression.AccessException;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.PropertyAccessor;
 
-abstract class ReadOnlyGenericPropertyAccessor implements
-        PropertyAccessor {
+abstract class ReadOnlyGenericPropertyAccessor implements PropertyAccessor {
 
+    @Override
     public final boolean canWrite(final EvaluationContext context,
             final Object target, final String name) throws AccessException {
         return false;
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public final Class[] getSpecificTargetClasses() {
         return null;
     }
 
+    @Override
     public final void write(final EvaluationContext context, final Object target,
             final String name, final Object newValue) throws AccessException {
         throw new AccessException(MessageFormat.format(

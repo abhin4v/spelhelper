@@ -39,20 +39,21 @@ final class ImplicitMethodResolver implements MethodResolver {
     private final ReflectiveMethodResolver delegate = new ReflectiveMethodResolver();
 
     private static final MethodExecutor NULL_ME = new MethodExecutor() {
+        @Override
         public TypedValue execute(final EvaluationContext context, final Object target,
                 final Object... arguments) throws AccessException {
-            return null;
+            throw new UnsupportedOperationException("This method should never be called");
         }
     };
 
-    private static final class ImplicitMethodExecutor implements
-            MethodExecutor {
+    private static final class ImplicitMethodExecutor implements MethodExecutor {
         private final MethodExecutor executor;
 
         public ImplicitMethodExecutor(final MethodExecutor executor) {
             this.executor = executor;
         }
 
+        @Override
         public TypedValue execute(final EvaluationContext context, final Object target,
                 final Object... arguments) throws AccessException {
             Object[] modifiedArguments = new Object[arguments.length + 1];
@@ -66,7 +67,7 @@ final class ImplicitMethodResolver implements MethodResolver {
     public MethodExecutor resolve(
             final EvaluationContext context, final Object targetObject,
             final String name, final List<TypeDescriptor> argumentTypes)
-    throws AccessException {
+        throws AccessException {
         if (targetObject == null) {
             return null;
         }
